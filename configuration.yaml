@@ -157,8 +157,8 @@ switch:
       command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1136396 1 183"
       friendly_name: Unused plug
     grill:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1135923 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1135932 1 183"
+      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1137923 1 183"
+      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1137932 1 183"
       friendly_name: Grill machine
     rice:
       command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1144067 1 183"
