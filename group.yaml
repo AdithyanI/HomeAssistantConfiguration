@@ -1,0 +1,43 @@
+  #living_room:
+    #view: yes
+    #entities:
+      #- media_player.media_player
+      #- light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+      #- sensor.fibaro_system_fgms001_motion_sensor_luminance_2
+      #- sensor.fibaro_system_fgms001_motion_sensor_temperature_2
+      #- binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+
+  #script_and_automation:
+    #view: yes
+    #entities:
+      #- group.all_scripts
+      #- group.all_automations
+  
+  alarm:
+    view: yes
+    entities: 
+      - group.morning_alarm
+    
+  morning_alarm:
+    entities:
+      - binary_sensor.rice
+      - input_slider.hour     
+      - input_slider.minute
+      - input_boolean.egg
+      - input_boolean.light
+      - input_boolean.rice
+  
+  arduino:
+    name: Arduino
+    entities:
+      - switch.egg_boilerM
+      - switch.grill_machineM
+      - switch.rice_cookerM
+      - switch.tv_and_speakersM
+      - switch.LightM
+               
+  miscellaneous:
+    name: Divers
+    entities:
+      - script.restart_home_assistant   
+  

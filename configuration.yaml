@@ -19,13 +19,21 @@ homeassistant:
     sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
       friendly_name: Temperature  
     binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2:
-      friendly_name: Motion  
+      friendly_name: Motion
+    binary_sensory.rice:
+      hidden: true
+    sensor.time:
+      hidden: true
+    input_boolean.rice:
+      entity_picture: /local/rice-cooker.png
+    input_boolean.egg:
+      entity_picture: /local/egg-icon.png
       
 # Enables the frontend
 frontend:
 
 # Show links to resources in log and frontend
-introduction:
+# introduction:
 
 # View all events in a logbook
 logbook:
@@ -34,24 +42,24 @@ logbook:
 updater:
 
 # Track the sun
-sun:
+#sun:
 
 # Enables support for tracking state changes over time.
 history:
 
 # Allows you to issue voice commands from the frontend
-conversation:
+#conversation:
 
 # Prediction of weather
-sensor:
-   platform: yr
+#sensor:
+#   platform: yr
 
 # Discover some devices automatically
 discovery:
 
-zwave:
-  usb_path: /dev/ttyACM0
-  config_path: /srv/hass/hass_venv/lib/python3.5/site-packages/libopenzwave-0.3.1-py3.5-linux-armv6l.egg/config
+#zwave:
+#  usb_path: /dev/ttyACM0
+#  config_path: /srv/hass/hass_venv/lib/python3.5/site-packages/libopenzwave-0.3.1-py3.5-linux-armv6l.egg/config
 
 media_player:
   platform: kodi
@@ -64,66 +72,21 @@ media_player:
 # Group every entity in one single page.
 # Different icons can be given for the pages also.
 # Groups can be places under groups also.
-group: 
-  living_room:
-    view: yes
-    entities:
-      - media_player.media_player
-      - light.domitech_smart_led_retrofit_kit_ze27eu_level_3
-      - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
-      - sensor.fibaro_system_fgms001_motion_sensor_temperature_2
-      - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+group: !include group.yaml
     
-automation:
-- alias: Turn on living room lights when there is movement
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
-      to: 'on'
-  condition:
-    - condition: numeric_state
-      entity_id: 'sensor.fibaro_system_fgms001_motion_sensor_luminance_2'
-      below: '100'
-  action:
-    service: homeassistant.turn_on
-    entity_id: script.timed_lamp
-    
+automation: !include automation.yaml
 
-script:
-  timed_lamp:
-    alias: "Turn on lamp and set timer"
-    sequence:
-      # Cancel ev. old timers
-      - service: script.turn_off
-        data:
-           entity_id: script.timer_off
-      - service: light.turn_on
-        data:
-          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
-      # Set new timer
-      - service: script.turn_on
-        data:
-          entity_id: script.timer_off
-
-  timer_off:
-    alias: "Turn off lamp after 5 minutes"
-    sequence:
-      - delay:
-          minutes: 5
-      - service: light.turn_off
-        data:
-          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
- 
- 
+script: !include script.yaml
+  
 # Enable the local mqtt broker
-#mqtt:
-  #broker: localhost
-  #port: 1883
-  #client_id: home-assistant-1
-  #keepalive: 60
-  #username: adithyan
-  #password: adithyan
-  #protocol: 3.1
+mqtt:
+  broker: localhost
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: adithyan
+  password: adithyan
+  protocol: 3.1
 
 #rollershutter:
   #platform: mqtt
@@ -137,34 +100,11 @@ script:
   #value_template: '{{ value.x }}'
   
 #logger:
-#  default: debug
+  #default: debug
   #logs:
     #homeassistant.components.switch.rpi_rf: debug
   
-switch:
-  platform: command_line
-  switches:
-    tv:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1135923 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1135932 1 183"
-      friendly_name: TV and Speakers
-    egg:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1136067 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1136076 1 183"
-      friendly_name: Egg boiler
-    3:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1136387 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1136396 1 183"
-      friendly_name: Unused plug
-    grill:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1137923 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1137932 1 183"
-      friendly_name: Grill machine
-    rice:
-      command_on: "sudo /home/pi/433Utils/RPi_utils/./codesend 1144067 1 183"
-      command_off: "sudo /home/pi/433Utils/RPi_utils/./codesend 1144076 1 183"
-      friendly_name: Rice cooker
-
+switch: !include switch.yaml
 
 # The stuff for the cooker and other thing coming here.
 # {{states.input_slider.fanautooffslider.state}}
@@ -174,3 +114,51 @@ switch:
     #name: "Turn Fan Off Automatically"
     #initial: off
     #icon: mdi:fan
+
+input_slider:
+  hour:
+    name: hour
+    initial: 6
+    min: 0
+    max: 23
+    step: 1
+  minute:
+    name: minute
+    initial: 30
+    min: 0
+    max: 59
+    step: 1
+
+binary_sensor: 
+  - platform: template 
+    sensors:
+      rice:
+        value_template: '{{ now().hour == (states.input_slider.hour.state | int) and now().minute == (states.input_slider.minute.state | int) }}'
+        entity_id:
+          -  input_slider.hour
+          -  input_slider.minute
+          -  sensor.time
+        
+sensor:
+  - platform: time_date
+    display_options:
+      - time
+
+input_boolean :
+  rice:
+    name: Rice cooker
+    initial: off
+
+  egg:
+    name: Egg boiler
+    initial: off
+
+  light:
+    name: Light
+    initial: off
+    icon: mdi:lightbulb
+      
+
+#shell_command:
+#  play_sound: sudo /usr/bin/omxplayer /home/pi/Downloads/Aigiri_Nandhini_BombaySisters.mp3
+

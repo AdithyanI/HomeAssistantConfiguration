@@ -1,0 +1,101 @@
+- alias: Turn on living room lights when there is movement
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: 'sensor.fibaro_system_fgms001_motion_sensor_luminance_2'
+      below: '50'
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.timed_lamp
+
+- alias: Turn off rice cooker after turning on
+  trigger:
+    - platform: state
+      entity_id: switch.rice_cooker
+      to: 'on'
+  action:
+    - delay: 00:00:10
+    - service: switch.turn_off
+      data:
+        entity_id: switch.rice_cooker
+
+- alias: Turn egg boiler after turning on
+  trigger:
+    - platform: state
+      entity_id: switch.egg_boiler
+      to: 'on'
+  action:
+    - delay: 00:00:11
+    - service: switch.turn_off
+      data:
+        entity_id: switch.egg_boiler
+
+- alias: Turn light of after turning on
+  trigger:
+    - platform: state
+      entity_id: switch.light
+      to: 'on'
+  action:
+    - delay: 00:00:12
+    - service: switch.turn_off
+      data:
+        entity_id: switch.light
+
+
+
+- alias: Turn egg boiler after turning on
+  trigger:
+    - platform: state
+      entity_id: switch.light
+      to: 'on'
+  action:
+    - delay: 00:00:10
+    - service: switch.turn_off
+      data:
+        entity_id: switch.light
+
+- alias: Turn on rice in morning
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rice
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 'input_boolean.rice'
+      state: 'on'
+  action:
+    - delay: 00:00:00
+    - service: switch.turn_on
+      entity_id: switch.rice_cooker
+
+- alias: Turn on egg in morning
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rice
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 'input_boolean.egg'
+      state: 'on'
+  action:
+    - delay: 00:00:02
+    - service: switch.turn_on
+      entity_id: switch.egg_boiler
+
+
+- alias: Turn on light in morning
+  trigger:
+    platform: state
+    entity_id: binary_sensor.rice
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 'input_boolean.light'
+      state: 'on'
+  action:
+    - delay: 00:00:04
+    - service: switch.turn_on
+      entity_id: switch.light

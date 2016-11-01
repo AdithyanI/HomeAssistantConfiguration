@@ -1,0 +1,44 @@
+  timed_lamp:
+    alias: "Turn on lamp and set timer"
+    sequence:
+      # Cancel ev. old timers
+      - service: script.turn_off
+        data:
+           entity_id: script.timer_off
+      - service: light.turn_on
+        data:
+          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+      # Set new timer
+      - service: script.turn_on
+        data:
+          entity_id: script.timer_off
+
+  #switchoff_rice:
+    #alias: "Switch off rice cooker after 10 seconds"
+    #sequence:
+      #- delay:
+          #seconds: 10
+      #- service: switch.turn_off
+        #data:
+          #entity_id: switch.rice_cooker
+      #- delay:
+          #seconds: 10
+      #- service: switch.turn_off
+        #data:
+          #entity_id: switch.rice_cooker
+
+  timer_off:
+    alias: "Turn off lamp after 5 minutes"
+    sequence:
+      - delay:
+          minutes: 5
+      - service: light.turn_off
+        data:
+          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+          
+          
+  restart_home_assistant:
+    alias: Restart Home Assistant
+    sequence:
+      - alias: Restart Home Assistant
+        service: homeassistant.restart
