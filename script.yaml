@@ -7,7 +7,8 @@
            entity_id: script.timer_off
       - service: light.turn_on
         data:
-          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3_0
+          brightness: 255
       # Set new timer
       - service: script.turn_on
         data:
@@ -26,15 +27,20 @@
       #- service: switch.turn_off
         #data:
           #entity_id: switch.rice_cooker
+          
+      #- service: light.turn_off
+        #data:
+          #entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+          
 
   timer_off:
     alias: "Turn off lamp after 5 minutes"
     sequence:
       - delay:
-          minutes: 5
+          minutes: 1
       - service: light.turn_off
         data:
-          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3
+          entity_id: light.domitech_smart_led_retrofit_kit_ze27eu_level_3_0
           
           
   restart_home_assistant:

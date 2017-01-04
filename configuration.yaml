@@ -12,13 +12,13 @@ homeassistant:
   time_zone: Europe/Berlin
     
   customize:
-    light.domitech_smart_led_retrofit_kit_ze27eu_level_3:
+    light.domitech_smart_led_retrofit_kit_ze27eu_level_3_0:
       friendly_name: Hall light  
-    sensor.fibaro_system_fgms001_motion_sensor_luminance_2:
+    sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3:
       friendly_name: Luminance  
-    sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+    sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1:
       friendly_name: Temperature  
-    binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2:
+    binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0:
       friendly_name: Motion
     binary_sensory.rice:
       hidden: true
@@ -57,9 +57,9 @@ history:
 # Discover some devices automatically
 discovery:
 
-#zwave:
-#  usb_path: /dev/ttyACM0
-#  config_path: /srv/hass/hass_venv/lib/python3.5/site-packages/libopenzwave-0.3.1-py3.5-linux-armv6l.egg/config
+zwave:
+  usb_path: /dev/ttyACM0
+  config_path: /srv/hass/hass_venv/lib/python3.5/site-packages/libopenzwave-0.3.1-py3.5-linux-armv6l.egg/config
 
 media_player:
   platform: kodi
@@ -99,8 +99,8 @@ mqtt:
   #payload_stop: "stop"
   #value_template: '{{ value.x }}'
   
-#logger:
-  #default: debug
+logger:
+  default: debug
   #logs:
     #homeassistant.components.switch.rpi_rf: debug
   

@@ -1,11 +1,11 @@
 - alias: Turn on living room lights when there is movement
   trigger:
     - platform: state
-      entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+      entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
       to: 'on'
   condition:
     - condition: numeric_state
-      entity_id: 'sensor.fibaro_system_fgms001_motion_sensor_luminance_2'
+      entity_id: 'sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3'
       below: '50'
   action:
     service: homeassistant.turn_on
@@ -17,10 +17,13 @@
       entity_id: switch.rice_cooker
       to: 'on'
   action:
-    - delay: 00:00:10
+    - delay: 00:45:00
     - service: switch.turn_off
       data:
         entity_id: switch.rice_cooker
+    - service: switch.turn_off
+      data:
+        entity_id: switch.rice_cookerm
 
 - alias: Turn egg boiler after turning on
   trigger:
@@ -28,34 +31,29 @@
       entity_id: switch.egg_boiler
       to: 'on'
   action:
-    - delay: 00:00:11
+    - delay: 00:15:00
     - service: switch.turn_off
       data:
         entity_id: switch.egg_boiler
+    - service: switch.turn_off
+      data:
+        entity_id: switch.egg_boilerm
 
-- alias: Turn light of after turning on
+- alias: Turn light off after turning on
   trigger:
     - platform: state
       entity_id: switch.light
       to: 'on'
   action:
-    - delay: 00:00:12
+    - delay: 00:60:00
     - service: switch.turn_off
       data:
         entity_id: switch.light
-
-
-
-- alias: Turn egg boiler after turning on
-  trigger:
-    - platform: state
-      entity_id: switch.light
-      to: 'on'
-  action:
-    - delay: 00:00:10
     - service: switch.turn_off
       data:
-        entity_id: switch.light
+        entity_id: switch.lightm
+
+
 
 - alias: Turn on rice in morning
   trigger:
@@ -70,6 +68,9 @@
     - delay: 00:00:00
     - service: switch.turn_on
       entity_id: switch.rice_cooker
+    - service: switch.turn_on
+      entity_id: switch.rice_cookerm
+
 
 - alias: Turn on egg in morning
   trigger:
@@ -81,9 +82,11 @@
       entity_id: 'input_boolean.egg'
       state: 'on'
   action:
-    - delay: 00:00:02
+    - delay: 00:00:01
     - service: switch.turn_on
       entity_id: switch.egg_boiler
+    - service: switch.turn_on
+      entity_id: switch.egg_boilerm
 
 
 - alias: Turn on light in morning
@@ -96,6 +99,8 @@
       entity_id: 'input_boolean.light'
       state: 'on'
   action:
-    - delay: 00:00:04
+    - delay: 00:00:02
     - service: switch.turn_on
       entity_id: switch.light
+    - service: switch.turn_on
+      entity_id: switch.lightm
